@@ -1,16 +1,27 @@
 '''
 Custom subject archive from a mapping table and deidentification for MBC XNAT
+
+STEPS:
+    1. Upload studies to XNAT using storescu or DQR plugin.
+    2. Create a mapping file eg. format 
+        PROJECT_001,46852
+        PROJECT_002,95142
+    2. Select the correct project for required studies.
+    3. Run the script : eg : python mbc-deident-up.py -t {mapping_file_path} -u {username} -p {password}
+
+TODO:
+    1. Select project directly form the script
+        error while changing project, 1.8.2.2 not yet supported natively
 '''
 
 import xnat as x
 import os
-import sys
 import random
 import argparse
 
 
 def create_table(table):
-    # Create mapping dictionary
+    # Create mapping dictionary from a text file
     mapdic = {}
     with open(table, 'r') as transt_file:
         for line in transt_file:
@@ -22,6 +33,13 @@ def create_table(table):
 
 
 def main():
+    '''
+        - Get input form user through cli
+        - make a dictionary form table
+        - connect to xnat instance
+        - archive studies based on uid from mapping table
+    '''
+
     #CLI input
     parser = argparse.ArgumentParser(description='Archive and Deident MBC XNAT')
     parser.add_argument('-t', '--table', dest='tname', help='Mapping table')
@@ -29,6 +47,7 @@ def main():
     parser.add_argument('-p', '--password', dest='pword', help='Password')
     args = parser.parse_args()
 
+    # setting up variables
     dic = {}
     table = args.tname
     uname = args.uname
