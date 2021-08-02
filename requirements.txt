@@ -1,3 +1,4 @@
 xnatpy
 pandas
-requests
+numpy
+pydicom

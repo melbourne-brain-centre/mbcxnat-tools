@@ -12,12 +12,13 @@ STEPS:
 TODO:
     1. Select project directly form the script
         error while changing project, 1.8.2.2 not yet supported natively
+    2. Label as {studydate}T{Time}  >> DONE
 '''
 
 import xnat as x
 import os
-import random
 import argparse
+import pydicom
 
 
 def create_table(table):
@@ -58,18 +59,25 @@ def main():
 
     # Connect with xnat instance
     with x.connect('https://xnat.thembc.com.au', user=uname, password=pword) as session:
-        # Create a new name for subject and experiment
+        # Select all sessions in prearchive
         prearc = session.prearchive.sessions()
-        for pas in prearc:
-            print(pas)
-            work_subject = pas.subject
-            try:
+        for eachp in prearc:
+            work_subject = eachp.subject
+            if work_subject in dic:
+                scan = eachp.scans
+                # Get session label
+                for sd in scan:
+                    ds = sd.read_dicom()
+                    studytime, sep, tail = (ds.StudyTime).partition('.')
+                    label = f'{ds.StudyDate}T{studytime}'
+                    print(label)
+                    break
+                        
                 subject_name = dic[work_subject]
-                nr = random.randint(0, 99)
-                exp_name = f'{subject_name}_{nr}'
+                exp_name = label
                 print(f'Study ID : {work_subject}: Subject Name : {subject_name} / Session Name : {exp_name}')
-                pas.archive(subject=subject_name, experiment=exp_name)
-            except:
+                eachp.archive(subject=subject_name, experiment=exp_name)
+            else:
                 print("Subject not present in Table")
 
 
