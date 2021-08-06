@@ -63,21 +63,22 @@ def main():
         prearc = session.prearchive.sessions()
         for eachp in prearc:
             work_subject = eachp.subject
-            if work_subject in dic:
-                scan = eachp.scans
-                # Get session label
-                for sd in scan:
-                    ds = sd.read_dicom()
-                    studytime, sep, tail = (ds.StudyTime).partition('.')
-                    label = f'{ds.StudyDate}T{studytime}'
-                    print(label)
-                    break
-                        
+#           print(work_subject, eachp.scans)
+            scan = eachp.scans
+            for sd in scan:
+                ds = sd.read_dicom()
+                studytime, sep, tail = (ds.StudyTime).partition('.')
+                label = f'{ds.StudyDate}T{studytime}'
+                print(label)
+                break
+        
+            try:
                 subject_name = dic[work_subject]
+# #             nr = random.randint(0, 99)
                 exp_name = label
                 print(f'Study ID : {work_subject}: Subject Name : {subject_name} / Session Name : {exp_name}')
                 eachp.archive(subject=subject_name, experiment=exp_name)
-            else:
+            except:
                 print("Subject not present in Table")
 
 
