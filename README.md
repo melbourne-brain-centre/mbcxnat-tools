@@ -9,3 +9,6 @@ Tools developed by mbc for XNAT administration
 
 ## custom-variable-up
 - Add custom variables to XNAT subjects from a csv file
+
+## redcap2xnat 
+- dump variables form REDCap and upload to XNAT subjects
