@@ -84,7 +84,7 @@ def main():
     variables =  list(df.columns)
 
     # Connect with xnat instance
-    with x.connect('https://dev-xnat.thembc.com.au', user=uname, password=pword) as session:
+    with x.connect('http://45.113.232.108/', user=uname, password=pword) as session:
         # List out projects and let user select
         all_projects = session.projects
         user_project = get_user_project(all_projects)
