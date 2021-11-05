@@ -19,6 +19,7 @@ import xnat as x
 import os
 import argparse
 import pydicom
+import random
 
 
 def create_table(table):
@@ -74,8 +75,8 @@ def main():
         
             try:
                 subject_name = dic[work_subject]
-# #             nr = random.randint(0, 99)
-                exp_name = f'{subject_name}_{label}'
+                nr = random.randint(0, 99)
+                exp_name = f'{subject_name}_{label}_{nr}'
                 print(f'Study ID : {work_subject}: Subject Name : {subject_name} / Session Name : {exp_name}')
                 eachp.archive(subject=subject_name, experiment=exp_name)
             except:

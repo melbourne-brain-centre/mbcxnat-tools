@@ -12,3 +12,6 @@ Tools developed by mbc for XNAT administration
 
 ## redcap2xnat 
 - dump variables form REDCap and upload to XNAT subjects
+
+## automis
+- artemis data collection pipeline
