@@ -46,7 +46,7 @@ def check_upload(now, path):
             final_size = check_size(path)
 
 def dicom_sort(now,src_path, dest_path):
-    """Sort incomming dicom dirs"""
+    """Utility function to sort incomming dicom dirs"""
     if not os.path.exists(f'{dest_path}'):
         print_with_color(f"{now} -- DICOM SORT START", color=BLUE)
         subprocess.run(['python', './dicom-sort.py', '-s', f'{src_path}', '-t', f'{dest_path}', '-o', 'i'])
@@ -76,7 +76,7 @@ def create_table(now, proj_dir):
     return test_arr
 
 def dicom_deident(now,src_path, proj_path):
-    """Deident sorted dirs"""
+    """Utility function to deident sorted dirs"""
     # if not os.path.exists(f'{dest_path}'):
     print_with_color(f"{now} -- DICOM DEIDENT START", color=BLUE)
     subprocess.run(['python', './dicom-deident.py', '-t', f'{proj_path}TABLE.txt', '-s', f'{src_path}', '-d', f'{proj_path}DEIDENT', '-m', '2'])
@@ -159,11 +159,13 @@ class LogHandler(FileSystemEventHandler):
                 dicom_sort(now, src_path, dest_path)
                 # DEIDENT
                 pro_table = create_table(now, proj_dir)
+                #print(pro_table)
+                #print(pro_table[-1])
                 dicom_deident(now, dest_path, proj_dir)
                 # XNAT 
                 # zip first
                 case_id = zip_upload(now,pro_table[-1],proj_dir)
-                
+                print(self.xnatServer, self.xnatUser, self.xnatPwd)
                 xnat_upload(now, case_id, proj_dir, self.xnatServer, self.xnatUser, self.xnatPwd)
 
     def on_moved(self, event):

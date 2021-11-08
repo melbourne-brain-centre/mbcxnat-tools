@@ -20,3 +20,13 @@ LOG_FILES_EXTENSIONS = ('.txt', '.log', '.trc')
 
 # Patterns for observations
 EXCEPTION_PATTERN = ['EXCEPTION', 'FATAL', 'ERROR']
+
+# XNAT Instance
+XNAT_SERVER = "https://dev-xnat.thembc.com.au/"
+
+# XNAT Username
+XNAT_USER = 'brokaha'
+
+# XNAT PWD
+XNAT_PWD = 'MBCrmh2020#'
+
