@@ -22,11 +22,11 @@ LOG_FILES_EXTENSIONS = ('.txt', '.log', '.trc')
 EXCEPTION_PATTERN = ['EXCEPTION', 'FATAL', 'ERROR']
 
 # XNAT Instance
-XNAT_SERVER = "https://dev-xnat.thembc.com.au/"
+XNAT_SERVER = ''
 
 # XNAT Username
-XNAT_USER = 'brokaha'
+XNAT_USER = ''
 
 # XNAT PWD
-XNAT_PWD = 'MBCrmh2020#'
+XNAT_PWD = ''
 
