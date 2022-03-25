@@ -1,19 +1,30 @@
 # mbcxnat-tools
-Tools developed by mbc for XNAT administration 
+Tools developed by MBC for XNAT administration 
+*WORK IN PROGRESS*
 ---
-## WORK IN PROGRESS
----
-## setup-configs
-- Config and setup files for mbcxnat-docker and nginx
+### deident-up
+Archive and deidentify data from xnat prearchive while generating formatted experiment labels.
 
-## deident-up
-- Custom subject archive from a mapping table and deidentification for MBC XNAT
+Setup in XNAT
+- Enable custom Dicom routing for Subject to `(0010,0020):(.*)` and Session to `(0010,0010):(.*)`
+- Use the Xnat Anonymization script provided in deident-up/xnat_annon in the required project.
+- Change the project for required subjects from the prearchive menu
+- Uploading user must have required privileges for archiving data
+
+Usage
+- `python mbc-deident-up.py -u {xnat_username} -s {server_url} -t {mapping_table}`
+   Only provide the -t tag if you want to change the id of the subject. A mapping table needs to be created which links the current uid to the required uid. A sample is provided on deident-up/sample_table.txt
+- The subject will then be archived and the experiments will have the following label pattern: sub_name+studydate+studytime+modality ie XNATSUB001_20200101T123000_MR
 
 ## custom-variable-up
-- Add custom variables to XNAT subjects from a csv file
+Upload data to XNAT custom variables.
+
+Setup in XNAT
+- Create all the fiels that are present in the spreadsheet
+- The fields name must match exactly in xnat and spreadsheet
+
+Usage
+- `python variable-up.py -f {csv file path} -u {xnat-user} -s {server-url}` 
 
 ## redcap2xnat 
-- dump variables form REDCap and upload to XNAT subjects
-
-## automis
-- artemis data collection pipeline
+- dump variables form REDCap and upload to XNAT subjects. *initial commit*

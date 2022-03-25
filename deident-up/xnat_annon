@@ -1,0 +1,10 @@
+version "6.1"
+(0010,0020) := subject  // Patient ID
+(0010,0010) := subject  //Patient Name
+(0012,0062) := "YES"   // Patient Identity Removed
+//Add the dicom tags that needs to be deleted eg:
+-(0010,0040) // Pateint's Address
+-(0010,0060) // Patient's Mother's Birth Name
+-(0010,2154) // Patient's Telephone Number
+-(0010,21B0) // Additional Patient History
+-(0010,21C0) // Pregnancy Status

@@ -16,7 +16,7 @@ import xnat as x
 import numpy as np
 import pandas as pd 
 import argparse
-
+from getpass import getpass
 
 def get_user_project(all_projects):
     '''
@@ -47,13 +47,14 @@ def main():
     parser = argparse.ArgumentParser(description='Archive and Deident MBC XNAT')
     parser.add_argument('-f', '--csv_file', dest='cfile', help='CSV file')
     parser.add_argument('-u', '--username', dest='uname', help='Username for MBC XNAT')
-    parser.add_argument('-p', '--password', dest='pword', help='Password')
+    parser.add_argument('-s', '--xnat_server', dest='x_serv', help='XNAT URL')
     args = parser.parse_args()
 
     # setting up variables
     csv_file = args.cfile
+    xnat_server = args.x_serv
     uname = args.uname
-    pword = args.pword
+    pword = getpass("Enter your XNAT password: ")
 
     # reading the csv file and cleaning up
     df = pd.read_csv(csv_file)
@@ -62,7 +63,7 @@ def main():
     variables =  list(df.columns)
 
     # Connect with xnat instance
-    with x.connect('https://dev-xnat.thembc.com.au', user=uname, password=pword) as session:
+    with x.connect(xnat_server, user=uname, password=pword) as session:
         # List out projects and let user select
         all_projects = session.projects
         user_project = get_user_project(all_projects)

@@ -47,7 +47,7 @@ def main():
     parser = argparse.ArgumentParser(description='Archive and Deident MBC XNAT\nIf there is no table dont put -t\nExample usage python mbc-deident-up.py (-t ./TABLE - optional) -u {uname}')
     parser.add_argument('-t', '--table', dest='tname', default=None, help='Mapping table')
     parser.add_argument('-u', '--username', dest='uname', help='Username for MBC XNAT')
-    # parser.add_argument('-p', '--password', dest='pword', help='Password')
+    parser.add_argument('-s', '--server', dest='xnat_server', help='Server URL')
     args = parser.parse_args()
 
     # setting up variables
@@ -56,7 +56,7 @@ def main():
     uname = args.uname
     
     pword =  getpass("Enter your XNAT password: ")
-    xnat_site = 'https://dev-xnat.thembc.com.au'
+    xnat_site = args.xnat_server
     
 
     # Create a dictionary for subject mapping
