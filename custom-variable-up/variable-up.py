@@ -35,28 +35,6 @@ def get_user_project(all_projects):
     return user_input
 
 
-def quality_check(to_find, variables , df):
-    '''
-        Test Quality Checker
-    '''
-    qc_check = 'pass'
-    for cvar in variables:
-        to_check = df.loc[to_find,[cvar]].values[0]
-        if np.isnan(to_check):
-            qc_check = 'fail'
-            return qc_check        
-        if cvar == 'volume':
-            if (to_check < 50) or (to_check > 80):
-                qc_check = 'recheck'
-        if cvar == 'ara_scale':
-            if (to_check < 0) or (to_check > 10):
-                qc_check = 'recheck'
-        if cvar == 'nra_scale':
-            if (to_check < 0) or (to_check > 5):
-                qc_check = 'recheck'
-    return qc_check
-
-
 def main():
     '''
         - Get input form user through cli
@@ -98,11 +76,6 @@ def main():
             to_find = case.label
             for cvar in variables:
                 case.fields[cvar] = df.loc[to_find,[cvar]]
-
-            # Data Quality check
-            qc_check = quality_check(to_find, variables , df)
-            case.fields['qc_check'] = qc_check
-            print(case.fields)
 
 
 if __name__ == "__main__":

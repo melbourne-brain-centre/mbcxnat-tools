@@ -1,5 +1,0 @@
-# only track 'official' themes
-/themes/*
-!/themes/xnat-dark
-!/themes/xnat-retro
-!/themes/xnat-sample
