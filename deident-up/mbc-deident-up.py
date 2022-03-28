@@ -71,6 +71,9 @@ def main():
         # Select all sessions in prearchive
         prearc = session.prearchive.sessions()
         for eachp in prearc:
+            if eachp.project == "Unassigned":
+                print(f"No project assigned to {eachp.subject}\nSkipping {eachp.subject}")
+                continue
             work_subject = eachp.subject
             print(f"Now Archiving {work_subject}")
             # Getting dicom tags
