@@ -28,3 +28,11 @@ Usage
 
 ## redcap2xnat 
 - dump variables form REDCap and upload to XNAT subjects. *initial commit*
+
+
+## data-share
+Transfer ownership of all subjects and experiments between projects
+
+Usage
+- `python data_share.py  -x {SITE_URL} -u {USER_NAME} -s {SOURCE_PROJ_ID} -d {DEST_PROJ_ID}`
+- Still in the testing phase. Only use temporary/dumb data.
