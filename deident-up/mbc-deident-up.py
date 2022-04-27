@@ -13,7 +13,7 @@ STEPS:
     4. Enter your password
 TODO:
     1. Select project directly form the script
-        error while changing project, 1.8.2.2 not yet supported natively
+        Work around can be written. Can be done by sending POST request
     
 '''
 
