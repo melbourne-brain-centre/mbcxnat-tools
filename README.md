@@ -13,7 +13,7 @@ Setup in XNAT
 
 Usage
 - `python mbc-deident-up.py -u {xnat_username} -s {server_url} -t {mapping_table}`
-   Only provide the -t tag if you want to change the id of the subject. A mapping table needs to be created which links the current uid to the required uid. A sample is provided on deident-up/sample_table.txt
+- Only provide the -t tag if you want to change the id of the subject. A mapping table needs to be created which links the current uid to the required uid. A sample is provided on deident-up/sample_table.txt
 - The subject will then be archived and the experiments will have the following label pattern: sub_name+studydate+studytime+modality ie XNATSUB001_20200101T123000_MR
 
 ## custom-variable-up
@@ -30,9 +30,9 @@ Usage
 - dump variables form REDCap and upload to XNAT subjects. *initial commit*
 
 
-## data-share
+## Transfer ownership
 Transfer ownership of all subjects and experiments between projects
 
 Usage
-- `python data_share.py  -x {SITE_URL} -u {USER_NAME} -s {SOURCE_PROJ_ID} -d {DEST_PROJ_ID}`
+- `python transfer_ownership.py  -x {SITE_URL} -u {USER_NAME} -s {SOURCE_PROJ_ID} -d {DEST_PROJ_ID}`
 - Still in the testing phase. Only use temporary/dumb data.
