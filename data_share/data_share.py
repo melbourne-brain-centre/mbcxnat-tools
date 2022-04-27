@@ -64,9 +64,14 @@ def main():
         src_proj = session.projects[src_p]
         all_subjects = src_proj.subjects
 
+        # Looping over each subject from source project
         for each_sub in all_subjects.values():
             all_exps = each_sub.experiments.values()
+
+            # Generate the put url
             api_path_sub = uri_generator(is_sub=True, sub_data=each_sub)
+
+            # Sending the PUT request to share subject to destination project
             try:
                 session.put(path=api_path_sub)
                 print(f"{each_sub.label} : SUBJECT SHARING SUCCESFUL")
@@ -75,8 +80,11 @@ def main():
                 print(f"{each_sub.label} : SUBJECT SHARING FAILED")
                 continue
 
+            # Looping over each experiment within the subject
             for each_exp in all_exps:
+                # Generate the PUT request URL
                 api_path_exp = uri_generator(is_sub=False, sub_data=each_sub, exp_data=each_exp)
+                # Sending the PUT request to share experiment to destination project permenantly
                 try:
                     session.put(path=api_path_exp)
                     print(f"{each_exp.label} : EXPERIMENT SHARING SUCCESFUL")
@@ -85,19 +93,22 @@ def main():
                     print(f"{each_exp.label} : EXPERIMENT SHARING FAILED")
                     continue
 
+        # For some reason the subject needs to be shared temporarily first and then only it can be changed primarily
+        # The sesson below will change the subject ownership permenantly
         with x.connect(server, user=uname, password=pword) as session:
             src_proj = session.projects[src_p]
             all_subjects = src_proj.subjects
             for each_sub in all_subjects.values():
                 api_path_sub = uri_generator(is_sub=True, sub_data=each_sub)
                 api_path_sub = f"{api_path_sub}&primary=true"
-                #print(api_path_sub)
+
+                # It will give 500 response back but the request will be Succesful
                 try:
                     session.put(path=api_path_sub)
                     print(f"{each_sub.label} : SUBJECT SHARING SUCCESFUL")
                 except Exception as e:
                     print(f"{each_sub.label} : SUBJECT SHARING SUCCESFUL")
-
+        # Status update
         print(f"Subjects shared : {sub_count}\nExperiments shared : {exp_count}")
 
 

@@ -79,7 +79,12 @@ def main():
             # Getting dicom tags
             scan = eachp.scans
             for sd in scan:
-                ds = sd.read_dicom()
+                # Check if dicom files are present
+                try:
+                    ds = sd.read_dicom()
+                except:
+                    print(f"can't read a dicom file for {work_subject}:{sd}")
+                    continue
                 studytime, sep, tail = (ds.StudyTime).partition('.')
                 modality = ds.Modality
                 label = f'{ds.StudyDate}T{studytime}_{modality}'
