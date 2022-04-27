@@ -44,24 +44,22 @@ def main():
     '''
 
     #CLI input
-    parser = argparse.ArgumentParser(description='Archive and Deident MBC XNAT\nIf there is no table dont put -t\nExample usage python mbc-deident-up.py (-t ./TABLE - optional) -u {uname} -s {server_url}')
-    parser.add_argument('-t', '--table', dest='tname', default=None, help='Mapping table')
+    parser = argparse.ArgumentParser(description='Archive and Deident MBC XNAT\nIf there is no table dont put -t\nExample usage python mbc-deident-up.py -p {proj} -u {uname} -s {server_url}')
+    parser.add_argument('-p', '--project', dest='nproj', default=None, help='new proj')
     parser.add_argument('-u', '--username', dest='uname', help='Username for MBC XNAT')
     parser.add_argument('-s', '--server', dest='xnat_server', help='Server URL')
     args = parser.parse_args()
 
     # setting up variables
-    dic = {}
-    table = args.tname
+    new_proj = args.nproj
     uname = args.uname
     
     pword =  getpass("Enter your XNAT password: ")
     xnat_site = args.xnat_server
-    
-    # Create a dictionary for subject mapping
-    if table:
-        print("yes")
-        dic = create_table(table)
+
+    if not xnat_site[-1] == "/":
+        xnat_site = xnat_site + "/"
+
     
     print(f"Connecting to {xnat_site} as {uname}")
     # Connect with xnat instance
@@ -70,40 +68,17 @@ def main():
         # Select all sessions in prearchive
         prearc = session.prearchive.sessions()
         for eachp in prearc:
-            if eachp.project == "Unassigned":
-                print(f"No project assigned to {eachp.subject}\nSkipping {eachp.subject}")
-                continue
             work_subject = eachp.subject
-            print(f"Now Archiving {work_subject}")
-            # Getting dicom tags
-            scan = eachp.scans
-            for sd in scan:
-                # Check if dicom files are present
-                try:
-                    ds = sd.read_dicom()
-                except:
-                    print(f"can't read a dicom file for {work_subject}:{sd}")
-                    continue
-                studytime, sep, tail = (ds.StudyTime).partition('.')
-                modality = ds.Modality
-                label = f'{ds.StudyDate}T{studytime}_{modality}'
-                break
-            
-            # Archiving 
+            print(f"Working on {work_subject}")
+            org_link = eachp.external_uri()
+            temp = org_link.split("/")[4:]
+            pre_arc_src = f"/{('/').join(temp)}"
             try:
-                if table:
-                    subject_name = dic[work_subject]
-                else:
-                    subject_name = work_subject
-                exp_name = f'{subject_name}_{label}'
-                print(f'Study ID : {work_subject}: Subject Name : {subject_name} / Session Name : {exp_name}')
-                eachp.archive(subject=subject_name, experiment=exp_name, overwrite="append")
+                session.post(path=f"{xnat_site}data/services/prearchive/move", data={"src":pre_arc_src,"newProject":new_proj})
+                print(f"Moved : {work_subject} to project : {new_proj}")
             except:
-                # It always throws an exception msg even when archiving is sucesful
-                # Be aware and always check for issues on the prearchive page
-                # In case of errors click on details for theat particular case to get more info 
-                print("Subject Archived")
-
-
+                print("Project move failed!")
+                continue
+          
 if __name__ == "__main__":
     main()
