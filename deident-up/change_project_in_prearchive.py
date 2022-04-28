@@ -34,7 +34,7 @@ def connect_xnat(xnat_site,uname,pword,new_proj):
 
         # Check if there are prearchive sessions
         if len(prearc) == 0:
-            print("No sessions in prearchive.")
+            print("No sessions in prearchive.\nCheck again")
             sys.exit()
 
         # Loop through prearchive
@@ -68,8 +68,8 @@ def main():
     '''
 
     #CLI input
-    parser = argparse.ArgumentParser(description='Change project in prearchive -t\nExample usage python mbc-deident-up.py -p {proj} -u {uname} -s {server_url}')
-    parser.add_argument('-p', '--project', dest='nproj', default=None, help='new proj')
+    parser = argparse.ArgumentParser(description='Change project in prearchive -t\nExample usage: python change_project_in_prearchive.py -p {proj} -u {uname} -s {server_url}')
+    parser.add_argument('-p', '--project', dest='nproj', help='Destination project')
     parser.add_argument('-u', '--username', dest='uname', help='Username for MBC XNAT')
     parser.add_argument('-s', '--server', dest='xnat_server', help='Server URL')
     args = parser.parse_args()
