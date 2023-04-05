@@ -36,3 +36,6 @@ Transfer ownership of all subjects and experiments between projects
 Usage
 - `python transfer_ownership.py  -x {SITE_URL} -u {USER_NAME} -s {SOURCE_PROJ_ID} -d {DEST_PROJ_ID}`
 - Still in the testing phase. Only use temporary/dumb data.
+
+## ADD prefix
+Add prefix to subjects while transfering data between the QC and main projects
